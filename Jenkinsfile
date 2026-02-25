@@ -27,7 +27,6 @@ pipeline{
         }
         stage("Push the changed deployment file to github"){
             steps{
-                            steps {
                 sh """
                    git config --global user.name "amoljadhav97"
                    git config --global user.email "007asjadhav0@gmail.com"
