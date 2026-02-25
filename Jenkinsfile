@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment{
-        APP_NAME = "register-app-pieline"
+        APP_NAME = "register-app-pipeline"
     }
 
     
