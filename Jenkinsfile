@@ -1,24 +1,23 @@
-pipeline {
-    agent { label "Jenkins-Agent" }
-    environment {
-              APP_NAME = "register-app-pipeline"
+pipeline{
+    agent any
+    environment{
+        APP_NAME = "register-app-pieline"
     }
 
-    stages {
-        stage("Cleanup Workspace") {
+    
+    stages{
+        stage("cleanup"){
             steps {
-                cleanWs()
+            cleanWs()
             }
         }
-
-        stage("Checkout from SCM") {
-               steps {
-                   git branch: 'main', credentialsId: 'github', url: 'https://github.com/Ashfaque-9x/gitops-register-app'
-               }
+        stage("checkout from scm"){
+            steps{
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/AmolJadhav97/gitops-register-app'
+            }    
         }
-
-        stage("Update the Deployment Tags") {
-            steps {
+        stage("update deployment tags"){
+            steps{
                 sh """
                    cat deployment.yaml
                    sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yaml
@@ -26,20 +25,19 @@ pipeline {
                 """
             }
         }
-
-        stage("Push the changed deployment file to Git") {
-            steps {
+        stage("Push the changed deployment file to github"){
+            steps{
+                            steps {
                 sh """
-                   git config --global user.name "Ashfaque-9x"
-                   git config --global user.email "ashfaque.s510@gmail.com"
+                   git config --global user.name "amoljadhav97"
+                   git config --global user.email "007asjadhav0@gmail.com"
                    git add deployment.yaml
                    git commit -m "Updated Deployment Manifest"
                 """
                 withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
-                  sh "git push https://github.com/Ashfaque-9x/gitops-register-app main"
+                  sh "git push https://github.com/amoljadhav97/gitops-register-app main"
                 }
             }
         }
-      
     }
 }
